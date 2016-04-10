@@ -14,11 +14,17 @@ start grails:
   grails run-app
 
 
-in a new tab, start gulp/webpack:
+in a new tab, cd into ./frontend/SpyFinder, then start gulp with the command below, which will be used as the task runner and webpack as the compiler. While developing, webpack's react component hot swapping is enabled which starts an additional node server on port 4002. Additionally, a small node server is running to map all requests to 3050 for the frontend app to a single html file for which the frontend app can bootstrap itself in the browser. Therefore, make sure ports 3050 and 4002 are free. Run these commands:
 
   gulp watch
 
+in another tab run:
 
-navigate to localhost:8080, then live the dream.
+  node app.js
 
-grails --debug-jvm run app
+navigate to localhost:3050, then live the dream.
+
+
+for debugging grails: 
+
+  grails --debug-jvm run app
