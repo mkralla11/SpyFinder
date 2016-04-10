@@ -9,7 +9,8 @@ var env = process.env.MIX_ENV || 'dev';
 var prod = env === 'prod';
 const PATHS = {  
   appAssets: Path.join(__dirname, 'src'),
-  build: Path.join(__dirname, 'build')
+  build: Path.join(__dirname, 'build'),
+  node_modules: Path.join(__dirname, 'node_modules')
 }
 
 var entries = {
@@ -50,7 +51,8 @@ module.exports = {
     alias: {
       // below, list global/mixin files to be imported VIA less (See naming solution/reasoning at https://github.com/webpack/less-loader/issues/32)
       "lesshat.less":         PATHS.appAssets + '/stylesheets/lesshat.less',
-      'global_styles.less':   PATHS.appAssets + '/stylesheets/global_styles.less'
+      'global_styles.less':   PATHS.appAssets + '/stylesheets/global_styles.less',
+      'leaflet.css':   PATHS.node_modules + '/leaflet/dist/leaflet.css'
     }
   },
   output: {
@@ -77,7 +79,7 @@ module.exports = {
             'file?hash=sha512&digest=hex&name=[hash].[ext]',
             'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
         ],
-        include: PATHS.appAssets
+        include: [PATHS.appAssets, PATHS.node_modules + '/leaflet/dist/images']
       },
       {
         test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
