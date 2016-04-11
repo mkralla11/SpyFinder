@@ -56,7 +56,7 @@ const Main = React.createClass({
     }
     else if(!this._nextBound){
       this._nextBound = true;
-      this.map.setView([51.505, -0.09], 13);
+      this.map.setView([39.095963, -99.316406], 3);
     }
   },
 
