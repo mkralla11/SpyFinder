@@ -16,6 +16,37 @@ const includeValue = function(rgx, string){
   return RegExp(rgx, "i").test(string);
 }
 
+const ageFilter = function(input, age){
+  const vals = input.split(" ");
+  if(vals.length != 3){
+    return false;
+  }
+  const [_na, operator, targetAge] = vals;
+
+
+  let res = false;
+
+  switch(operator){
+    case ">":
+      res = age > targetAge;
+      break;
+    case ">=":
+      res = age >= targetAge;
+      break;
+    case "<":
+      res = age < targetAge;
+      break;
+    case "<=":
+      res = age <= targetAge;
+      break;
+    case "=":
+      res = age == targetAge;
+      break;
+  }
+  // console.log(age);
+  // console.log(res);
+  return res;
+}
 
 
 const getState = function(){
@@ -61,9 +92,11 @@ const FindSpies = React.createClass({
 
   filterSpies: function(){
     let res = {};
+    const siv = this.state.searchInputValue;
+
     _(this.state.spies).map((spy, k)=>{
       if( (spy.gender == 0 && this.state.male) || (spy.gender == 1 && this.state.female) ){
-        if(_.isEmpty(this.state.searchInputValue) || includeValue(escapeRegExp(this.state.searchInputValue), spy.name)){
+        if(_.isEmpty(siv) || includeValue(escapeRegExp(siv), spy.name) || ageFilter(siv, spy.age)){
           res[k] = spy;
         }
       }

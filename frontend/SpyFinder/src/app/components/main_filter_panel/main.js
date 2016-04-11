@@ -34,7 +34,7 @@ const Main = React.createClass({
     return (
       <div className="main-filter-panel">
         <div className='search-field-wrapper'>
-          <TextField className='search-field' onChange={this.props.onSearchInputChange} value={this.props.searchInputValue} onFocus={this.inputFocused} onBlur={this.inputBlurred} hintText="search for spies..." hintStyle={{color: '#AFF2FF'}} underlineFocusStyle={{borderColor: 'white'}} style={{display: 'block', width: '100%'}} inputStyle={{color: 'white'}} />
+          <TextField className='search-field' onChange={this.props.onSearchInputChange} value={this.props.searchInputValue} onFocus={this.inputFocused} onBlur={this.inputBlurred} hintText="search spies... name, age > 50" hintStyle={{color: '#AFF2FF'}} underlineFocusStyle={{borderColor: 'white'}} style={{display: 'block', width: '100%'}} inputStyle={{color: 'white'}} />
         </div>
         <div className='advanced-link-wrapper'>
           <a href='#' className='advanced-link' onClick={this.advancedLinkClicked}>advanced</a>
