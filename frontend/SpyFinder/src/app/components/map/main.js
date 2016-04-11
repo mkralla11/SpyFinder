@@ -28,28 +28,64 @@ const Main = React.createClass({
     this._renderMarkers(this.props.spies);
     this._fitBounds(this.props.spies);
   },
+  componentDidUpdate: function(prevProps){
+    if(!_.isEqual(this.props.spies, prevProps.spies)){
+      this._renderMarkers(this.props.spies);
+      this._fitBounds(this.props.spies);
+    }
+  },
+
+  componentWillUnmount: function(){
+    this.map.off('load', this.props.mapFinishedLoading);
+    this.map.off('zoomstart', this.props.mapZoomingStarted);
+    this.map.off('zoomend', this.props.mapZoomingEnded);
+  },
+
+  _bindMapEvents: function(){
+    this.map.on('load', this.props.mapFinishedLoading);
+    this.map.on('zoomstart', this.props.mapZoomingStarted);
+    this.map.on('zoomend', this.props.mapZoomingEnded);
+  },
+
+
 
   _fitBounds: function(data){
     const coords = this._coordsFromData(data);
-    this.map.fitBounds(coords);
+    if(coords.length){
+      this.map.fitBounds(coords);
+    }else{
+      this.map.setView([51.505, -0.09], 13);
+    }
   },
 
   _coordsFromData: function(data){
     return _(data).map((spy)=>{
-      return [spy.longitude, spy.latitude];
+      return [spy.latitude, spy.longitude];
     })
   },
 
   _setupMap: function(){
     this.map = L.map('custom-map', {maxBoundsViscosity: 1.0});
+    this._bindMapEvents();
     L.tileLayer.provider('OpenStreetMap.Mapnik').addTo(this.map);
   },
 
 
   _renderMarkers: function(data){
+    let markers = {};
     _(data).map((spy, k)=>{
-      L.marker([parseFloat(spy.longitude), parseFloat(spy.latitude)], {icon: this._getIconForGender(spy.gender)}).addTo(this.map).bindPopup(`name: ${spy.name}<br/>age: ${spy.age}<br/>gender: ${this._genderToHuman(spy.gender)}`);
+      let marker = markers[spy.id];
+      if(!marker){
+        console.log('new marker');
+        let marker = L.marker([parseFloat(spy.latitude), parseFloat(spy.longitude)], {icon: this._getIconForGender(spy.gender)}).addTo(this.map).bindPopup(`name: ${spy.name}<br/>age: ${spy.age}<br/>gender: ${this._genderToHuman(spy.gender)}`);
+        marker._id = spy.id;
+        markers[spy.id] = marker;
+      }
+      else{
+        console.log('marker exists');
+      }
     });
+    this._markers = markers;
   },
 
   _genderToHuman: function(gender){

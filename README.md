@@ -6,7 +6,7 @@ start postgres:
 
 `pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start`
 
-create your postgres database for this application, naming it spy_finder and adding columns id, name, age, gender, longitude, and latitude. You can use psql or a GUI tool like pgAdmin3.
+create your postgres database for this application, naming it spy_finder and adding columns id, name, age, gender, longitude, and latitude. You can use psql or a GUI tool like pgAdmin3. Alternatively, utilize the `structure.sql` file in the root of the project.
 
 
 start grails:
