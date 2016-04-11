@@ -7,13 +7,24 @@ import MainFilterPanel from '../../components/main_filter_panel/main.js';
 import SpyStore from '../../stores/spy_store.js';
 import listenToStores from '../../utilities/listen_to_stores';
 
-const getState = function(){
 
+const escapeRegExp = function(string){
+  return string.trim().replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+}
+
+const includeValue = function(rgx, string){
+  return RegExp(rgx, "i").test(string);
+}
+
+
+
+const getState = function(){
   return {
     mapIsLoading: true,
     spies: SpyStore.getAllSpies(),
     male: 1,
-    female: 1
+    female: 1,
+    searchInputValue: ""
   }
 }
 
@@ -42,11 +53,19 @@ const FindSpies = React.createClass({
     this.setState({mapIsZooming: false});
   },
 
+  onSearchInputChange: function(e, v){
+    this.setState({searchInputValue: v});
+  },
+
+
+
   filterSpies: function(){
     let res = {};
     _(this.state.spies).map((spy, k)=>{
       if( (spy.gender == 0 && this.state.male) || (spy.gender == 1 && this.state.female) ){
-        res[k] = spy;
+        if(_.isEmpty(this.state.searchInputValue) || includeValue(escapeRegExp(this.state.searchInputValue), spy.name)){
+          res[k] = spy;
+        }
       }
     })
     return res;
@@ -54,10 +73,10 @@ const FindSpies = React.createClass({
 
   render: function() {
     const spies = this.filterSpies();
-    
+
     return (
       <div className="find-spies-page">
-        <MainFilterPanel onFemaleChange={this.onFemaleChange} onMaleChange={this.onMaleChange} {...this.state} />
+        <MainFilterPanel {...this.state} onFemaleChange={this.onFemaleChange} onMaleChange={this.onMaleChange} onSearchInputChange={this.onSearchInputChange}/>
         <MapComponent {...this.state} spies={spies} mapFinishedLoading={this.mapFinishedLoading} mapZoomingStarted={this.mapZoomingStarted} mapZoomingEnded={this.mapZoomingEnded}/>
       </div>
     )

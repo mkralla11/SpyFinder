@@ -9,7 +9,7 @@ start postgres:
 create your postgres database for this application, naming it spy_finder and adding columns id, name, age, gender, longitude, and latitude. You can use psql or a GUI tool like pgAdmin3. Alternatively, utilize the `structure.sql` file in the root of the project.
 
 I will be using Grails 3, so see https://grails.github.io/grails-doc/3.0.x/guide/introduction.html for more information, including installation and setup.
-start grails:
+Now that you have Grails installed, start Grails:
 
 `grails run-app`
 

@@ -5,6 +5,10 @@ import Checkbox from 'material-ui/lib/checkbox';
 import styles from "./main.less";
 
 
+
+
+
+
 const Main = React.createClass({
   getInitialState: function(){
     return {
@@ -24,11 +28,13 @@ const Main = React.createClass({
     this.setState({showAdvancedPanel: !this.state.showAdvancedPanel});
   },
 
+
   render: function() {
+
     return (
       <div className="main-filter-panel">
         <div className='search-field-wrapper'>
-          <TextField className='search-field' onFocus={this.inputFocused} onBlur={this.inputBlurred} hintText="search for spies..." hintStyle={{color: '#AFF2FF'}} underlineFocusStyle={{borderColor: 'white'}} style={{display: 'block', width: '100%'}} inputStyle={{color: 'white'}} />
+          <TextField className='search-field' onChange={this.props.onSearchInputChange} value={this.props.searchInputValue} onFocus={this.inputFocused} onBlur={this.inputBlurred} hintText="search for spies..." hintStyle={{color: '#AFF2FF'}} underlineFocusStyle={{borderColor: 'white'}} style={{display: 'block', width: '100%'}} inputStyle={{color: 'white'}} />
         </div>
         <div className='advanced-link-wrapper'>
           <a href='#' className='advanced-link' onClick={this.advancedLinkClicked}>advanced</a>

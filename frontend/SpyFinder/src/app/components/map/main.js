@@ -8,19 +8,20 @@ import FemaleIconImg from './images/female_icon.png';
 import llproviders from "leaflet-providers";
 
 
-var maleIcon = L.icon({
+const maleIcon = L.icon({
   iconUrl:      MaleIconImg,
   iconSize:     [50, 48],
   iconAnchor:   [25, 47],
   popupAnchor:  [0, -48]
 });
 
-var femaleIcon = L.icon({
+const femaleIcon = L.icon({
   iconUrl:      FemaleIconImg,
   iconSize:     [50, 50],
   iconAnchor:   [25, 49],
   popupAnchor:  [0, -48]
 });
+
 
 const Main = React.createClass({
   componentDidMount: function(){
@@ -78,17 +79,20 @@ const Main = React.createClass({
     _(data).map((spy, k)=>{
       let marker = this._markers[spy.id];
       if(!marker){
-        console.log('new marker');
+        // console.log('new marker');
         marker = L.marker([parseFloat(spy.latitude), parseFloat(spy.longitude)], {icon: this._getIconForGender(spy.gender)}).addTo(this.map).bindPopup(`name: ${spy.name}<br/>age: ${spy.age}<br/>gender: ${this._genderToHuman(spy.gender)}`);
       }
-      else{
-        console.log('marker exists');
-      }
+      // else{
+        // we should be checking and performing an update here,
+        // but it's not super necessary because the long/lat aren't
+        // currently able to changes
+        // console.log('marker exists');
+      // }
       markers[spy.id] = marker;
     });
     _(this._markers).map((oldMarker, k)=>{
       if(!markers[k]){
-        console.log('removing marking');
+        // console.log('removing marking');
         this.map.removeLayer(oldMarker);
       }
     });
