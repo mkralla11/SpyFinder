@@ -2,8 +2,7 @@
 
 ![SpyFinder up and running](https://github.com/mkralla11/SpyFinder/raw/master/up_and_running.gif)
 
-
-
+# Installation
 
 install postgres via homebrew or your chosen package manager.
 
