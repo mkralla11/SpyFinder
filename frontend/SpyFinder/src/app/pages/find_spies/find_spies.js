@@ -1,6 +1,6 @@
 import React from "react";
 import classNames from 'classnames/bind';
-
+import _ from 'underscore';
 import styles from "./find_spies.less";
 import MapComponent from "../../components/map/main.js";
 import MainFilterPanel from '../../components/main_filter_panel/main.js';
@@ -8,9 +8,12 @@ import SpyStore from '../../stores/spy_store.js';
 import listenToStores from '../../utilities/listen_to_stores';
 
 const getState = function(){
+
   return {
     mapIsLoading: true,
-    spies: SpyStore.getAllSpies()
+    spies: SpyStore.getAllSpies(),
+    male: 1,
+    female: 1
   }
 }
 
@@ -19,6 +22,13 @@ const FindSpies = React.createClass({
 
   componentDidMount: function(){ 
     SpyStore.loadSpies();
+  },
+  
+  onMaleChange: function(e, v){
+    this.setState({male: v});
+  },
+  onFemaleChange: function(e, v){
+    this.setState({female: v});
   },
 
   mapFinishedLoading: function(){
@@ -32,11 +42,23 @@ const FindSpies = React.createClass({
     this.setState({mapIsZooming: false});
   },
 
+  filterSpies: function(){
+    let res = {};
+    _(this.state.spies).map((spy, k)=>{
+      if( (spy.gender == 0 && this.state.male) || (spy.gender == 1 && this.state.female) ){
+        res[k] = spy;
+      }
+    })
+    return res;
+  },
+
   render: function() {
+    const spies = this.filterSpies();
+    
     return (
       <div className="find-spies-page">
-        <MainFilterPanel />
-        <MapComponent {...this.state} mapFinishedLoading={this.mapFinishedLoading} mapZoomingStarted={this.mapZoomingStarted} mapZoomingEnded={this.mapZoomingEnded}/>
+        <MainFilterPanel onFemaleChange={this.onFemaleChange} onMaleChange={this.onMaleChange} {...this.state} />
+        <MapComponent {...this.state} spies={spies} mapFinishedLoading={this.mapFinishedLoading} mapZoomingStarted={this.mapZoomingStarted} mapZoomingEnded={this.mapZoomingEnded}/>
       </div>
     )
   }

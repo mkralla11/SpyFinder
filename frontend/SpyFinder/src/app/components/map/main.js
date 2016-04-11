@@ -31,7 +31,7 @@ const Main = React.createClass({
   componentDidUpdate: function(prevProps){
     if(!_.isEqual(this.props.spies, prevProps.spies)){
       this._renderMarkers(this.props.spies);
-      this._fitBounds(this.props.spies);
+      // this._fitBounds(this.props.spies);
     }
   },
 
@@ -53,7 +53,9 @@ const Main = React.createClass({
     const coords = this._coordsFromData(data);
     if(coords.length){
       this.map.fitBounds(coords);
-    }else{
+    }
+    else if(!this._nextBound){
+      this._nextBound = true;
       this.map.setView([51.505, -0.09], 13);
     }
   },
@@ -74,17 +76,23 @@ const Main = React.createClass({
   _renderMarkers: function(data){
     let markers = {};
     _(data).map((spy, k)=>{
-      let marker = markers[spy.id];
+      let marker = this._markers[spy.id];
       if(!marker){
         console.log('new marker');
-        let marker = L.marker([parseFloat(spy.latitude), parseFloat(spy.longitude)], {icon: this._getIconForGender(spy.gender)}).addTo(this.map).bindPopup(`name: ${spy.name}<br/>age: ${spy.age}<br/>gender: ${this._genderToHuman(spy.gender)}`);
-        marker._id = spy.id;
-        markers[spy.id] = marker;
+        marker = L.marker([parseFloat(spy.latitude), parseFloat(spy.longitude)], {icon: this._getIconForGender(spy.gender)}).addTo(this.map).bindPopup(`name: ${spy.name}<br/>age: ${spy.age}<br/>gender: ${this._genderToHuman(spy.gender)}`);
       }
       else{
         console.log('marker exists');
       }
+      markers[spy.id] = marker;
     });
+    _(this._markers).map((oldMarker, k)=>{
+      if(!markers[k]){
+        console.log('removing marking');
+        this.map.removeLayer(oldMarker);
+      }
+    });
+
     this._markers = markers;
   },
 

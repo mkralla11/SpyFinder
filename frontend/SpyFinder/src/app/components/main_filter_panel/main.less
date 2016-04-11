@@ -1,4 +1,42 @@
+@import '~global_styles'; 
 
 .main-filter-panel{
+  position: fixed;
+  top: 50px;
+  left: 50px;
+  z-index: 10000;
+  width: 300px;
+  background-color: rgb(0, 188, 212);
+  box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+  color: #FFFFFF;
+  .search-field{
+    margin: 0 auto;
+  }
+  a {
+    color:white;
+    text-decoration: none;
+    &:hover, &:focus, &:active, &:visited{
+      color: white;
+    }
+    &:hover{
+      font-weight: bold;
+    }
+  }
+
+  .advanced-link{
+    float: right;
+    font-size: 12px;
+  }
+  .search-field-wrapper{
+    padding: 0 20px 0px 20px;
+  }
+  .advanced-link-wrapper{
+    .clearfix;
+    padding: 0 20px 10px 20px;
+  }
   
+  .filters{
+    padding: 20px 20px 20px 20px;
+    background-color: #F3F3F3;
+  }
 }
