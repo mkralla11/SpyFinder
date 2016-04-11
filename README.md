@@ -1,5 +1,10 @@
 # SpyFinder
 
+![SpyFinder up and running](https://github.com/mkralla11/SpyFinder/raw/master/up_and_running.gif)
+
+
+
+
 install postgres via homebrew or your chosen package manager.
 
 start postgres:
